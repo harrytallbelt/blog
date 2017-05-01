@@ -1,5 +1,5 @@
 ---
-date: 2017-03-29
+date: 2017-04-30
 published: true
 status: publish
 title: Simulating the Physical World
@@ -560,7 +560,7 @@ function runSimulation(
 It turns out to be pretty inconvenient to always operate on 1-dimensional arrays 
 of numbers, so we can abstract away the addition and multiplication operations 
 on the simulation state into an interface, then define our general simulation 
-code concisely using [TypeScript Generics][13].
+code concisely using [TypeScript Generics][13][^1].
 
 ```typescript
 interface Numeric<T> {
@@ -673,8 +673,7 @@ function render(y: TwoParticles) {
 runSimulation(y0, f, render)
 ```
 
-If we tweak the numbers a bit, we can get a pretty convincing simulation of the 
-moon's orbit!
+If we tweak the numbers a bit, we can get a simulation of the moon's orbit!
 
 <figure>
 <canvas id="earthmoon" width="400" height="400"></canvas>
@@ -685,7 +684,11 @@ Earth & Moon are shown at 10x their correct proportional size.
 </figcaption>
 </figure>
 
+If you want to play with the code, here it is: [Earth Moon Simulation on 
+Codepen][14].
+
 <script>
+(function() {
 var Vec2 = (function () {
     function Vec2(x, y) {
         if (x === void 0) { x = 0; }
@@ -766,12 +769,202 @@ function f(t, y) {
     x1.minus(x2).times(G * m1 / Math.pow(x1.minus(x2).length(), 3)));
 }
 var y0 = new TwoParticles(
-/* x1 */ new Vec2(0, -13.22), 
-/* v1 */ new Vec2(0, 0), 
-/* x2 */ new Vec2(3.6e8, 0), 
-/* v2 */ new Vec2(0, 1e3));
+/* x1 */ new Vec2(0, 0),
+/* v1 */ new Vec2(0, -13.22),
+/* x2 */ new Vec2(3.6e8, 0),
+/* v2 */ new Vec2(0, 1.076e3));
 runSimulation(y0, f, render);
+})();
 </script>
+
+# Collisions & Constraints
+
+While that mathematical model of things I presented models the physical world, 
+the numerical integration method sadly falls apart in certain situations.
+
+Consider a simulation of a bouncing ball.
+
+<figure>
+<canvas id="bounce1" width="400" height="400"></canvas>
+</figure>
+
+<script>(function() {
+var canvas = document.getElementById("bounce1"); var ctx = 
+canvas.getContext("2d");
+
+var y = 0.8; // m
+var v = 0;
+var a = -9.8; // m/s^2
+var secondsPerFrame = 1 / 60.0;
+var r = 0.2;
+var iterationsPerFrame = 30;
+
+function render(y) {
+    ctx.clearRect(0, 0, 400, 400);
+    ctx.fillStyle = '#EB5757';
+    ctx.beginPath();
+    ctx.ellipse(200, 400 - ((y+r) * 300), r * 300, r * 300, 0, 0, 2 * Math.PI);
+    ctx.fill();
+}
+
+function tick() {
+    render(y);
+
+    var h = secondsPerFrame / iterationsPerFrame;
+    for (var i = 0; i < iterationsPerFrame; i++) {
+        y += v * h;
+
+        if (y <= 0 && v <= 0) {
+            // Perfectly elastic collision
+            v = -v;
+        }
+
+        v += a * h;
+    }
+
+    requestAnimationFrame(tick);
+}
+tick();
+})()</script>
+
+The entire state of the simulation is:
+
+<div>$$
+\vec y = \begin{bmatrix}
+x \\
+v
+\end{bmatrix}
+$$</div>
+
+Where \\( x \\) is the ball's height off the ground and \\( v \\) is the 
+velocity of the ball. If we drop the ball from a height of 0.8 meters, we have:
+
+<div>$$
+\vec y_0 = \begin{bmatrix}
+0.8 \\
+0
+\end{bmatrix}
+$$</div>
+
+
+If we plot \\( x(t) \\), it would look something like this:
+
+<img width="400" height="400" src="/images/bouncegraph.png" />
+
+While the ball is falling, we can construct our derivative function \\( f \\) 
+fairly easily:
+
+<div>$$
+f(t, y(t)) = \frac{dy}{dt}(t) = \begin{bmatrix}
+    \frac{dx}{dt}(t) \\ \\
+    \frac{dv}{dt}(t)
+\end{bmatrix} = \begin{bmatrix}
+    v \\
+    a
+\end{bmatrix}
+$$</div>
+
+While accelerating only under the influence of gravity, \\( a = -g = -9.8 
+\frac{m}{s^2} \\).
+
+But what happens when the ball hits the ground? We know the ball has hit the 
+ground when \\( x = 0 \\). But in our numerical integration, it's possible that 
+the ball might be above the ground at one time step, and *in* the ground the 
+next time step: \\( x\_i > 0, x\_{i+1} < 0 \\).
+
+We could solve this by rewinding time to find the time \\( t_c \\) at which the 
+collision happens \\( (t_i < t_c < t\_{i+1}) \\). But once we've found that, we 
+still don't have a way to define \\( \frac{dv}{dt} \\) that would result in the 
+velocity instantaneously changing to be upwards instead of downwards.
+
+It's possible to work this all out by having the collision take a finite amount 
+of time to take place and applying some force \\( F \\) over that timespan \\( 
+\Delta t \\), but it's usually easier to just support some kind of discrete 
+constaints to the simulation. We can also do more than one iteration of the 
+physics simulation per rendered frame. With that in mind, our core simulation 
+code changes to this:
+
+```typescript
+function runSimulation<T extends Numeric<T>>(
+  y0: T,
+  f: (t: number, y: T) => T,
+  applyConstraints: (y: T) => T,
+  iterationsPerFrame: number,
+  render: (y: T) => void
+) {
+    const frameTime = 1 / 60.0
+    const h = frameTime / iterationsPerFrame
+
+    function simulationStep(yi: T, ti: number) {
+        render(yi)
+        requestAnimationFrame(function () {
+            for (let i = 0; i < iterationsPerFrame; i++) {
+                yi = yi.plus(f(ti, yi).times(h))
+                yi = applyConstraints(yi)
+                ti = ti + h
+            }
+            simulationStep(yi, ti)
+        })
+    }
+    simulationStep(y0, 0.0)
+}
+```
+
+And then we can implement our bouncing ball like so:
+
+```typescript
+const g = -9.8; // m / s^2
+const r = 0.2; // m
+
+class Ball implements Numeric<Ball> {
+    constructor(readonly x: number, readonly v: number) { }
+    plus(other: Ball) { return new Ball(this.x + other.x, this.v + other.v) }
+    times(scalar: number) { return new Ball(this.x * scalar, this.v * scalar) }
+}
+
+function f(t: number, y: Ball) {
+    const { x, v } = y
+    return new Ball(v, g)
+}
+
+function applyConstraints(y: Ball): Ball {
+    const { x, v } = y
+    if (x <= 0 && v < 0) {
+        return new Ball(x, -v)
+    }
+    return y
+}
+
+const y0 = new Ball(
+    /* x */ 0.8,
+    /* v */ 0
+)
+
+function render(y: Ball) {
+    ctx.clearRect(0, 0, 400, 400)
+    ctx.fillStyle = '#EB5757'
+    ctx.beginPath()
+    ctx.ellipse(200, 400 - ((y.x + r) * 300), r * 300, r * 300, 0, 0, 2 * Math.PI)
+    ctx.fill()
+}
+
+runSimulation(y0, f, applyConstraints, 30, render)
+```
+
+You can play around with this version of the code here: [Bouncing Ball on 
+Codepen][15].
+
+# Implementers beware!
+
+While this general description of simulations has some nice properties, it 
+doesn't necessarily yield the most high performance simulations. I find it a 
+nice framework to think about the behavior of simulations, though there's 
+certainly a lot of unnecessary overhead.
+
+The rain simulation that starts this post is, for instance, not implemented 
+using the patterns here. Instead, it was an experiment using the [Entity 
+Component System][16] architectural pattern. You can see the source for the rain 
+simulation here: [Rain Simulation source on GitHub][17].
 
 # Until next time!
 
@@ -819,3 +1012,9 @@ renderMathInElement(document.body);
 [11]: https://en.wikipedia.org/wiki/Linear_multistep_method
 [12]: https://www.typescriptlang.org/index.html
 [13]: https://www.typescriptlang.org/docs/handbook/generics.html
+[14]: http://codepen.io/jlfwong/pen/mmmXVK
+[15]: http://codepen.io/jlfwong/pen/LyyQMr
+[16]: https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system
+[17]: https://github.com/jlfwong/graphics-experiments/blob/master/particles2/particles2.ts
+
+[^1]: The same pattern would work using duck typing in dynamic languages like Python and JavaScript. This pattern would be nicer in languages supporting operator overloading, such as Python, C++, Scala, etc.
