@@ -24,7 +24,7 @@ background-image: url(/images/umbrella.png); user-select: none;"></canvas>
 <figcaption>Move your mouse left and right to control the wind.</figcaption>
 </figure>
 
-How might you go about simulating rain? Or, any physical process over time, for 
+How might you go about simulating rain? Or any physical process over time, for 
 that matter?
 
 In a simulation, whether it be rain, the airflow over a plane wing, or a slinky 
@@ -51,7 +51,7 @@ into these two statements:
 If you're confused about why you'd want to store the whole state in one big 
 vector, bear with me. This is one of those cases where it might seem we go way 
 over the top with generality, but I promise there are some interesting tidbits 
-from looking at a general model for simulation. Tidbits, I say!
+from looking at a general model for simulation.
 
 If you're confused about *how* you might store the whole state of a scene in one 
 big vector, let's look at a simple example. Let's consider a 2D simulation with 
@@ -123,7 +123,8 @@ $$</div>
 And if you're confused why we want to find \\( f(t, y(t)) \\) instead of any old 
 definition of \\( \frac{dy(t)}{dt} \\), the point is to find the derivative only 
 terms of our current state, \\( y(t) \\), constants, and the time itself. If 
-that's impossible, it likely that there's some bit of state you didn't consider.
+that's impossible, it likely that there's some bit of state we forgot to 
+consider.
 
 # The Initial State
 
@@ -142,7 +143,7 @@ Then our numerical initial conditions might look like this:
 \vec v_2(t_0) = \begin{bmatrix} -1 \\ 0 \end{bmatrix}
 $$</div>
 
-And smooshing that together into a single vector, we get our \\( \vec y_0 \\).
+Smooshing that together into a single vector, we get our \\( \vec y_0 \\).
 
 <div>$$
 \vec y_0 = \vec y(t_0) = \begin{bmatrix}
@@ -263,8 +264,11 @@ F = G \frac{m_1 m_2}{r^2}
 $$</div>
 
 Where \\( G \\) is the gravitational constant \\( 6.67 \times 10^{-11} 
-\frac{Nm^2}{kg^2} \\). In order to do our simulation, we need a direction too, 
-and we also need to define \\( r \\) in terms of some part of \\( \vec y(t) \\).
+\frac{Nm^2}{kg^2} \\), and \\( m_1 \\) and \\( m_2 \\) are the masses of our 
+particles (which we assume are constant).
+
+In order to do our simulation, we need a direction too, and we also need to 
+define \\( r \\) in terms of some part of \\( \vec y(t) \\).
 If we say that \\( \vec F_1 \\) is the force acting upon particle 1, then we can 
 do that like so:
 
@@ -325,9 +329,15 @@ G \frac{m_1 \big(\vec x_1(t) - \vec x_2(t)\big)}{|\vec x_1(t) - \vec x_2(t)|^2}
 Now then, now that we have a rigorously defined simulation, how might we go 
 about turning it into a mesmerizing animation?
 
-In case you've written a simulation or two in your day and immediately reach for 
-something like \\( \vec x(t + \Delta t) = \vec x(t) + \vec v(t) \Delta t \\), 
-let's take a step back and consider *why* that works.
+In case you've written simulations or games before, you might jump to
+something like this:
+
+```
+x += v * delta_t
+v += F/m * delta_t
+```
+
+Let's take a step back and consider *why* that works.
 
 # A Differential Equation
 
@@ -349,11 +359,11 @@ value problem][5].
 
 # Numerical Integration
 
-Some initial value problems have easily found analytic solution, but for complex 
-simulations this tends to be infeasible. So let's try to figure out a method of 
-approximating the solution.
+Some initial value problems have easily found analytic solutions, but for 
+complex simulations this tends to be infeasible. So let's try to figure out a 
+method of approximating the solution.
 
-Let's explore an approximate solution to a simpler initial value problem:
+Let's explore a simpler initial value problem:
 
 Given \\( y(0) = 1 \\) and \\( \frac{dy}{dt}(t) = f(t, y(t)) = y(t) \\), find an 
 approximation of \\( y(t) \\).
@@ -435,14 +445,15 @@ url(/images/emptygraph.png);" preserveAspectRatio="xMinYMin meet">
     <circle cx="0.833" cy="0.270833" r="0.01" fill="#EB5757" />
 </svg>
 
-Thinking about this general procedure recursively, we're left with this:
+Stating the procedure recursively, we have this:
 
 <div>$$\begin{aligned}
 t_{i+1} &= t_i + h \\
 y_{i+1} &= y_i + h f(t_i, y_i)
 \end{aligned}$$</div>
 
-This is called the "Forward Euler" method of numerical integration.
+This is called the "Forward Euler" method of numerical integration. This is the 
+general case of the step `x += v * delta_t`!
 
 In this particular initial value problem, our steps look like so:
 
@@ -480,10 +491,13 @@ y_3 &= y_2 + h y_2
 It turns out that this particular initial value problem has a nice analytical 
 solution: \\( y(t) = e^t \\)
 
+<figure>
 <svg width="400" viewBox="0 0 1 1" style="background-image: 
 url(/images/expgraph.png);"
 preserveAspectRatio="xMinYMin meet">
 </svg>
+<figcaption>Graph of \( y(t) = e^t \)</figcaption>
+</figure>
 
 When approximating the solution with Forward Euler, what do you think happens as 
 the time step \\( h \\) gets smaller?
@@ -562,10 +576,10 @@ render(euler(0, 2, 1, function(t, y) { return y; }, 0.5));
 })();</script>
 
 The error between the approximate solution and the exact solution decreases as 
-\\( h \\) decreases! In addition to decrease \\( h \\) to decrease the 
-truncation error, you could also use an alternative method of numerical 
-integration that may provide better error bounds, such as the [Midpoint 
-method][7], [Runge-Katta methods][8], and [linear multistep methods][11].
+\\( h \\) decreases! In addition to decreasing \\( h \\) to decrease the error, 
+you could also use an alternative method of numerical integration that may 
+provide better error bounds, such as the [Midpoint method][7], [Runge-Katta 
+methods][8], and [linear multistep methods][11].
 
 # Let's get coding!
 
@@ -654,27 +668,21 @@ simulations. Using the example of our two particle simulation from before:
 // two particle simulation at a point in time.
 class TwoParticles implements Numeric<TwoParticles> {
     constructor(
-        readonly x1: Vec2,
-        readonly v1: Vec2,
-        readonly x2: Vec2,
-        readonly v2: Vec2
+        readonly x1: Vec2, readonly v1: Vec2,
+        readonly x2: Vec2, readonly v2: Vec2
     ) { }
 
     plus(other: TwoParticles) {
         return new TwoParticles(
-            this.x1.plus(other.x1),
-            this.v1.plus(other.v1),
-            this.x2.plus(other.x2),
-            this.v2.plus(other.v2)
+            this.x1.plus(other.x1), this.v1.plus(other.v1),
+            this.x2.plus(other.x2), this.v2.plus(other.v2)
         );
     }
 
     times(scalar: number) {
         return new TwoParticles(
-            this.x1.times(scalar),
-            this.v1.times(scalar),
-            this.x2.times(scalar),
-            this.v2.times(scalar)
+            this.x1.times(scalar), this.v1.times(scalar),
+            this.x2.times(scalar), this.v2.times(scalar)
         )
     }
 }
@@ -835,8 +843,8 @@ runSimulation(y0, f, render);
 
 # Collisions & Constraints
 
-While that mathematical model of things I presented models the physical world, 
-the numerical integration method sadly falls apart in certain situations.
+While that mathematical model of things I presented does model the physical 
+world, the numerical integration method sadly falls apart in certain situations.
 
 Consider a simulation of a bouncing ball.
 
@@ -936,9 +944,11 @@ velocity instantaneously changing to be upwards instead of downwards.
 It's possible to work this all out by having the collision take a finite amount 
 of time to take place and applying some force \\( F \\) over that timespan \\( 
 \Delta t \\), but it's usually easier to just support some kind of discrete 
-constaints to the simulation. We can also do more than one iteration of the 
-physics simulation per rendered frame. With that in mind, our core simulation 
-code changes to this:
+constaints to the simulation.
+
+We can also do more than one iteration of the physics simulation per rendered 
+frame to reduce the amount by which the ball penetrates the floor before 
+bouncing.  With that in mind, our core simulation code changes to this:
 
 ```typescript
 function runSimulation<T extends Numeric<T>>(
@@ -1029,9 +1039,10 @@ strikes a chord with me. Getting simulations up and running and rendering makes
 for a very special kind of [something out of nothing][0].
 
 SIGGRAPH course notes served as a form of inspiration here, just as they did 
-with the [fluid simulation][1], this time in the form of the ["An Introduction 
-to Physically Based Modelling"][2] course notes from SIGGRAPH 2001. I have the 
-notes from 1997 linked because it looks like Pixar took the 2001 versions down.
+with the [fluid simulation][1]. Check out ["An Introduction to Physically Based 
+Modelling"][2] course notes from SIGGRAPH 2001 if you want a much more rigorous 
+look into this material. I have the notes from 1997 linked because it looks like 
+Pixar took the 2001 versions down.
 
 Thanks to [Maggie Cai][3] for the beautiful illustration of the couple with the 
 umbrella and for having the patience to meticulously choose colors when I can 
