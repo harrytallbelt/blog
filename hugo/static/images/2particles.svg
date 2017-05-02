@@ -1,0 +1,29 @@
+<svg width="400" height="250" viewBox="0 0 400 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:figma="http://www.figma.com/figma/ns">
+<title>2particles</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(202 177)" figma:type="canvas">
+<mask id="mask0_alpha" mask-type="alpha">
+<path d="M -202 -177L 198 -177L 198 73L -202 73L -202 -177Z" fill="#FFFFFF"/>
+</mask>
+<g id="2particles" mask="url(#mask0_alpha)" figma:type="frame">
+<path d="M -202 -177L 198 -177L 198 73L -202 73L -202 -177Z" fill="#FFFFFF"/>
+<g id="Arrow" figma:type="vector">
+<use xlink:href="#path0_stroke" transform="matrix(0.762141 0.647411 -0.647411 0.762141 -152 -126)" fill="#EB5757" fill-opacity="0.2"/>
+<use xlink:href="#path0_stroke" transform="matrix(0.762141 0.647411 -0.647411 0.762141 -152 -126)" fill="#EB5757" fill-opacity="0.2"/>
+</g>
+<g id="Arrow" figma:type="vector">
+<use xlink:href="#path0_stroke" transform="matrix(-0.866025 -0.5 0.5 -0.866025 130.676 23.0123)" fill="#2F80ED" fill-opacity="0.2"/>
+</g>
+<g id="Ellipse" figma:type="ellipse">
+<use xlink:href="#path1_fill" transform="translate(-172 -146)" fill="#EB5757"/>
+</g>
+<g id="Ellipse" figma:type="ellipse">
+<use xlink:href="#path1_fill" transform="translate(111 3)" fill="#2F80ED"/>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_stroke" d="M 123.085 1.06066C 123.671 0.474874 123.671 -0.474874 123.085 -1.06066L 113.539 -10.6066C 112.954 -11.1924 112.004 -11.1924 111.418 -10.6066C 110.832 -10.0208 110.832 -9.07107 111.418 -8.48528L 119.903 0L 111.418 8.48528C 110.832 9.07107 110.832 10.0208 111.418 10.6066C 112.004 11.1924 112.954 11.1924 113.539 10.6066L 123.085 1.06066ZM 0 1.5L 122.025 1.5L 122.025 -1.5L 0 -1.5L 0 1.5Z"/>
+<path id="path1_fill" d="M 40 20C 40 31.0457 31.0457 40 20 40C 8.95431 40 0 31.0457 0 20C 0 8.95431 8.95431 0 20 0C 31.0457 0 40 8.95431 40 20Z"/>
+</defs>
+</svg>

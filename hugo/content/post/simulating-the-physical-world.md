@@ -1,5 +1,5 @@
 ---
-date: 2017-04-30
+date: 2017-05-01
 published: true
 status: publish
 title: Simulating the Physical World
@@ -11,13 +11,18 @@ href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css"
 integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" 
 crossorigin="anonymous">
 
+<style>
+canvas, svg {
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+</style>
 
 <figure>
-<canvas id="header-sim" width="600" height="600" style="margin: 0 auto; background-image: url(/images/umbrella.png)"></canvas>
+<canvas id="header-sim" width="600" height="600" style="margin: 0 auto; 
+background-image: url(/images/umbrella.png); user-select: none;"></canvas>
 <figcaption>Move your mouse left and right to control the wind.</figcaption>
 </figure>
-
-TODO: Make the animation and dragging work properly on mobile too.
 
 How might you go about simulating rain? Or, any physical process over time, for 
 that matter?
@@ -53,7 +58,52 @@ big vector, let's look at a simple example. Let's consider a 2D simulation with
 2 particles.
 Each particle has a position \\( \vec x \\) and a velocity \\( \vec v \\).
 
-TODO: Diagram of two particles heading towards each other
+<script src="/javascripts/rain-simulation.js"></script>
+<script>
+(function() {
+var canvas = document.getElementById("header-sim");
+Simulation.main(canvas);
+
+var lastX;
+var lastY;
+
+// Convert touch moves to mousemoves to allow wind control on mobile
+canvas.addEventListener("touchmove", function(event) {
+    var touches = event.changedTouches,
+        first = touches[0];
+
+    // This is a silly hack to avoid needing to change any of the rain
+    // simulation code because I *really* want this post to be done.
+    var bounds = canvas.getBoundingClientRect();
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent("mousemove", true, true, window, 1, 
+                                  first.screenX * 600 / bounds.width, 
+                                  first.screenY * 600 / bounds.height,
+                                  first.clientX * 600 / bounds.width, 
+                                  first.clientY * 600 / bounds.height,
+                                  false, false, false, false, 0/*left*/, null);
+
+    first.target.dispatchEvent(simulatedEvent);
+
+    // On iOS, if the page is scrolling, requestAnimationFrame stops being
+    // called. So if we think the user is trying to drag left or right to
+    // control the wind speed, we prevent scrolling.
+    if (lastX && lastY) {
+        var dx = lastX - first.screenX;
+        var dy = lastY - first.screenY;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            event.preventDefault();
+        }
+    }
+    lastX = first.screenX;
+    lastY = first.screenY;
+}, true);
+})();
+</script>
+
+<figure>
+<img src="/images/2particles.svg">
+</figure>
 
 So to make \\( \vec y \\), all we have to do is smoosh \\( \vec x_1 \\),  \\( 
 \vec v_1 \\), \\( \vec x_2 \\), and \\( \vec v_2 \\) into one 8 element vector, 
@@ -79,9 +129,9 @@ that's impossible, it likely that there's some bit of state you didn't consider.
 
 Defining \\( \vec y_0 \\) defines the initial state of the simulation. So if the 
 initial state of our two-particle simulation looks something like this:
-
-TODO: Diagram of two particles heading towards each other with positions and 
-velocities defined
+<figure>
+<img src="/images/particlesetup.svg">
+</figure>
 
 Then our numerical initial conditions might look like this:
 
@@ -312,8 +362,9 @@ Let's examine the problem from a graphical perspective by considering the value
 and tangent line at \\(t = 0 \\). From our givens, we have \\( y(0) = 1 \\) and 
 \\( \frac{dy}{dt}(t) = y(t) = 1 \\).
 
-<svg width="400" height="400" viewBox="0 0 1 1" style="background-image: 
-url(/images/emptygraph.png); background-size: contain;">
+<svg width="400" viewBox="0 0 1 1"
+    style="background-image: url(/images/emptygraph.png);" 
+    preserveAspectRatio="xMinYMin meet">
     <path d="M0 0.833 L1 0.333" fill="none" stroke="#EB5757" 
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
@@ -324,8 +375,8 @@ follow the tangent line near to \\( t = 0 \\). So let's estimate \\( y(0 + h)
 \\) for some small value of \\( h \\) by following the tangent line. We'll use 
 \\( h = 0.5 \\) for now.
 
-<svg width="400" height="400" viewBox="0 0 1 1" style="background-image: 
-url(/images/emptygraph.png); background-size: contain;">
+<svg width="400" viewBox="0 0 1 1" style="background-image: 
+url(/images/emptygraph.png);" preserveAspectRatio="xMinYMin meet">
     <path d="M0 0.833 L1 0.333" fill="none" stroke="#EB5757" 
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
@@ -351,8 +402,8 @@ f(t, y(t)) &= y(t) \\
 f(0.5, 1.5) &= 1.5
 \end{aligned}$$</div>
 
-<svg width="400" height="400" viewBox="0 0 1 1" style="background-image: 
-url(/images/emptygraph.png); background-size: contain;">
+<svg width="400" viewBox="0 0 1 1" style="background-image: 
+url(/images/emptygraph.png);" preserveAspectRatio="xMinYMin meet">
     <path d="M0 0.95833 L1 0.20833" fill="none" stroke="#EB5757" 
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
@@ -361,8 +412,9 @@ url(/images/emptygraph.png); background-size: contain;">
 
 Then we can follow this tangent line \\( h \\) units to the right as well.
 
-<svg width="400" height="400" viewBox="0 0 1 1" style="background-image: 
-url(/images/emptygraph.png); background-size: contain;">
+<svg width="400" viewBox="0 0 1 1" style="background-image: 
+url(/images/emptygraph.png); background-size: contain;" 
+preserveAspectRatio="xMinYMin meet">
     <path d="M0 0.95833 L1 0.20833" fill="none" stroke="#EB5757" 
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
@@ -373,8 +425,8 @@ url(/images/emptygraph.png); background-size: contain;">
 We can repeat the process again, with a tangent slope of \\( f(t, y(t)) = f(1, 
 2.25) = 2.25\\):
 
-<svg width="400" height="400" viewBox="0 0 1 1" style="background-image: 
-url(/images/emptygraph.png); background-size: contain;">
+<svg width="400" viewBox="0 0 1 1" style="background-image: 
+url(/images/emptygraph.png);" preserveAspectRatio="xMinYMin meet">
     <path d="M0 1.2083 L1 0.0833" fill="none" stroke="#EB5757" 
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
@@ -428,21 +480,24 @@ y_3 &= y_2 + h y_2
 It turns out that this particular initial value problem has a nice analytical 
 solution: \\( y(t) = e^t \\)
 
-<svg width="400" height="400" viewBox="0 0 1 1" style="background-image: 
-url(/images/expgraph.png); background-size: contain;">
+<svg width="400" viewBox="0 0 1 1" style="background-image: 
+url(/images/expgraph.png);"
+preserveAspectRatio="xMinYMin meet">
 </svg>
 
 When approximating the solution with Forward Euler, what do you think happens as 
 the time step \\( h \\) gets smaller?
 
 <figure>
-<div style="text-align: center">
-<svg width="400" height="400" viewBox="0 0 1 1" style="background-image: 
-url(/images/expgraph.png); background-size: contain;" id="graph1"></svg>
+<svg width="400" viewBox="0 0 1 1" style="background-image: 
+url(/images/expgraph.png);" id="graph1" preserveAspectRatio="xMinYMin 
+meet"></svg>
+<div>
+    <span id="hval">\( h=0.5 \)</span>
+</div>
 <div>
     <input id="hrange" type="range" min="0.1" max="0.5" step="0.01" value="0.5" 
 />
-</div>
 </div>
 <figcaption>Move the slider left and right to control the value of 
 h.</figcaption>
@@ -498,6 +553,7 @@ function euler(t0, t1, y0, f, h) {
 }
 
 d3.select("#hrange").on("input change", function(data, index, nodes) {
+    katex.render("h=" + nodes[0].value, hval);
     render(euler(0, 2, 1, function(t, y) { return y; }, parseFloat(nodes[0].value, 10)))
 })
 
@@ -640,9 +696,9 @@ function f(t: number, y: TwoParticles) {
 
 // y(0) = y0
 const y0 = new TwoParticles(
-    /* x1 */ new Vec2(2, -1),
-    /* v1 */ new Vec2(0, 1),
-    /* x2 */ new Vec2(2, 1),
+    /* x1 */ new Vec2(2, 3),
+    /* v1 */ new Vec2(1, 0),
+    /* x2 */ new Vec2(4, 1),
     /* v2 */ new Vec2(-1, 0)
 )
 
@@ -982,11 +1038,6 @@ umbrella and for having the patience to meticulously choose colors when I can
 barely tell the difference between blue and grey.
 
 And in case you were wondering, the illustration was made in [Figma][4]. 😃
-
-<script src="/javascripts/rain-simulation.js"></script>
-<script>
-Simulation.main(document.getElementById("header-sim"));
-</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" 
 integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" 

@@ -102,8 +102,11 @@ figure {
   text-align: center;
 }
 
+figure > svg,
+figure > canvas,
 figure > img {
   max-width: 100%;
+  height: auto;
 }
 
 caption, figcaption {
@@ -209,6 +212,7 @@ article > p > svg {
   display: block;
   margin: 0 auto;
   max-width: 100%;
+  height: auto;
 }
 
 hr {
