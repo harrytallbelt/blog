@@ -578,7 +578,7 @@ render(euler(0, 2, 1, function(t, y) { return y; }, 0.5));
 The error between the approximate solution and the exact solution decreases as 
 \\( h \\) decreases! In addition to decreasing \\( h \\) to decrease the error, 
 you could also use an alternative method of numerical integration that may 
-provide better error bounds, such as the [Midpoint method][7], [Runge-Katta 
+provide better error bounds, such as the [Midpoint method][7], [Runge-Kutta 
 methods][8], and [linear multistep methods][11].
 
 # Let's get coding!
