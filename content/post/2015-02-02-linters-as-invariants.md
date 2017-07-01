@@ -88,7 +88,7 @@ href="https://twitter.com/jlfwong/status/562418126948548609">February 3,
 2015</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-You might've come across linters like [JSHint][0] or [pyflakes][1] before. Most 
+You might've come across linters like [JSHint][0] or [pyflakes][l1] before. Most 
 likely, you've used them in your local development environment to catch obvious 
 mistakes.
 
@@ -110,7 +110,7 @@ this invariant: **if the code passes JSHint, all top level symbols
 resolve**[^1].
 
 We can _strengthen_ that invariant by adding the linter as a [git
-pre-commit hook][2]. This is a good start, but it's easy to bypass commit hooks
+pre-commit hook][l2]. This is a good start, but it's easy to bypass commit hooks
 or have them misconfigured, so our invariant becomes **if the code is checked
 in _and_ the commit hook ran, all top level symbols in it resolve** instead of
 the desired **if the code is checked in, all top level symbols resolve**.
@@ -126,7 +126,7 @@ Then our invariant would become: **If the code is deployed, all top level
 symbols in it resolve**. This still isn't good enough, because it's not always 
 clear whether a particular bit of code has been deployed yet.
 
-At [Khan Academy][3], we write code in feature branches, then merge into master 
+At [Khan Academy][l3], we write code in feature branches, then merge into master 
 after successfully deploying each branch. Since tests and linters block deploys, 
 we now have this invariant: **if the code is in master, all top level symbols 
 resolve**. Nice!
@@ -183,9 +183,9 @@ become monumental undertakings. Let static analysis bail you out.
 concise.*
 
 [0]: http://jshint.com/
-[1]: https://github.com/pyflakes/pyflakes/
-[2]: http://git-scm.com/docs/githooks
-[3]: http://khanacademy.org/
+[l1]: https://github.com/pyflakes/pyflakes/
+[l2]: http://git-scm.com/docs/githooks
+[l3]: http://khanacademy.org/
 [4]: https://github.com/blog/1241-deploying-at-github
 [5]: http://en.wikipedia.org/wiki/Invariant_%28computer_science%29
 [6]: http://zachholman.com/talk/move-fast-break-nothing/

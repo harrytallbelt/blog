@@ -1,4 +1,4 @@
----
+
 date: 2011-10-16T00:00:00Z
 published: true
 status: publish
@@ -168,8 +168,8 @@ twitter [@jlfwong][twitter].
 
 [Fifteen Puzzle]: http://en.wikipedia.org/wiki/Fifteen_puzzle
 [ai-class]: https://www.ai-class.com/
-[sliding-puzzle-intro]: https://www.ai-class.com/course/video/quizquestion/15/1
-[underscore.js]: http://documentcloud.github.com/underscore/
+[sliding-puzzle-intro]: https://www.youtube.com/watch?v=-HvDwJAM2y4
+[underscore.js]: http://underscorejs.org/
 [Las Vegas algorithm]: http://en.wikipedia.org/wiki/Las_vegas_algorithm
 [Monte Carlo algorithm]: http://en.wikipedia.org/wiki/Monte_Carlo_algorithm
 [github.com/jlfwong/fifteen-puzzle]: https://github.com/jlfwong/fifteen-puzzle

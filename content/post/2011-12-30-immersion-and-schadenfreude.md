@@ -20,9 +20,9 @@ as I could from what I saw around me. I started writing competitions like
 learned a lot from hacking challenge sites like [hackquest][] and 
 [hackthissite][].
 
-But I also used to [dance][], [draw][], make [abstract 3D stuff][], game and 
-[play badminton][] (bear with me &mdash; the part of this that doesn't sound 
-like bragging is coming).
+But I also used to [dance][], [draw][], make [abstract 3D stuff][], gam,e and 
+play badminton (bear with me &mdash; the part of this that doesn't sound like 
+bragging is coming).
 
 When I got to university, I became fully immersed in computer science and 
 software. I made the ACM team, started reading [r/programming][] and [Hacker 
@@ -180,7 +180,7 @@ allowed to do so. **
 [dwite]: http://dwite.ca/
 [ECOO-CS]: http://ecoo.org/index.php?option=com_content&task=view&id=26&Itemid=57
 [UVa]: http://uva.onlinejudge.org/
-[USACO Training Program Gateway]: http://ace.delos.com/usacogate
+[USACO Training Program Gateway]: http://train.usaco.org/usacogate
 [skiena]: http://www.amazon.com/dp/0387001638/?tag=stackoverfl08-20
 [hackquest]: http://hackquest.com/
 [hackthissite]: http://www.hackthissite.org/

@@ -260,7 +260,7 @@ trying to deliver a free world class education to the world, go ahead and
 [1]: https://www.khanacademy.org/
 [2]: https://www.khanacademy.org/careers
 [3]: http://requirejs.org/
-[4]: http://visionmedia.github.io/mocha/
+[4]: https://mochajs.org/
 [5]: http://phantomjs.org/
 [6]: http://facebook.github.io/react/
 [7]: http://www.ss64.com/bash/ulimit.html

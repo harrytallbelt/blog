@@ -57,7 +57,7 @@ And then on the homepage, you'd have:
 ```
 
 This is by far the simplest solution because it requires no fancy build system 
-like [Grunt][5] or [gulp][6] - you can just serve your JS directly from disk. 
+like [Grunt][l5] or [gulp][6] - you can just serve your JS directly from disk.  
 You're going to want to have a build step anyway to do minification though, so 
 this isn't a huge advantage.
 
@@ -80,13 +80,13 @@ On the major downside, this is a ton of network traffic. If you have 10 JS
 script files on your page, then you're firing 10 HTTP requests to get those 10 
 files from server to browser. Each of these has overhead, and requires a round 
 trip to the server. Establishing connections can be slow, and each connection
-undergoes [TCP Slow-start][1], meaning that it doesn't reach full speed until
+undergoes [TCP Slow-start][l1], meaning that it doesn't reach full speed until
 after a few round trips[^2]. Downloading ten 20kB files is a great deal slower 
 than downloading one 200kB file over HTTP because of this.
 
-These problems are [largely mitigated][2] by [SPDY][3], and support for SPDY is 
-rising, but it's not good enough yet ([about 75%][4] as of this post) that we 
-can just completely ignore problems in HTTP.
+These problems are [largely mitigated][l2] by [SPDY][l3], and support for SPDY 
+is rising, but it's not good enough yet ([about 75%][l4] as of this post) that 
+we can just completely ignore problems in HTTP.
 
 ## Compression
 
@@ -284,11 +284,11 @@ The three most battle tested I'm aware of:
 - [RequireJS][16] with the [RequireJS Optimizer][17]. There's a specific example 
   for optimizing for multi-page apps: [example-multipage][18].
 
-[1]: http://en.wikipedia.org/wiki/Slow-start
-[2]: http://blog.cloudflare.com/what-makes-spdy-speedy/
-[3]: http://en.wikipedia.org/wiki/SPDY
-[4]: http://caniuse.com/#feat=spdy
-[5]: http://gruntjs.com/
+[l1]: http://en.wikipedia.org/wiki/Slow-start
+[l2]: http://blog.cloudflare.com/what-makes-spdy-speedy/
+[l3]: http://en.wikipedia.org/wiki/SPDY
+[l4]: http://caniuse.com/#feat=spdy
+[l5]: http://gruntjs.com/
 [6]: http://gulpjs.com/
 [7]: http://betterexplained.com/articles/how-to-optimize-your-site-with-gzip-compression/
 [11]: http://browserify.org/

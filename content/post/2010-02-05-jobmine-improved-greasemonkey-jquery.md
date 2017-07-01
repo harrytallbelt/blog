@@ -20,8 +20,8 @@ url: /2010/02/05/jobmine-improved-greasemonkey-jquery/
 </div>
 
 _I will no longer be supporting this script, there's a much better version 
-called [Jobmine Plus](http://userscripts.org/scripts/show/80771) maintained by 
-Matthew Ng._
+called [Jobmine Plus](https://github.com/matthewn4444/jobmine-plus-extension) 
+maintained by Matthew Ng._
 
 I, like many (most) Waterloo Co-op students, am forced to use Jobmine and am 
 extremely dissatisfied with its functionality. So I decided to kill three birds 
@@ -39,14 +39,8 @@ The result is, unsurprisingly, a Greasemonkey script written using jQuery that i
 <li><strong>No more spacers</strong> - the Jobmine page is riddled with spacer images just sitting there, stealing screen real estate</li>
 </ul>
 
-<strong>How to Install</strong>
-You'll either need Firefox & Greasemonkey, or a recent build of Chrome (Windows only?).
-You can get Greasemonkey here: <a href="https://addons.mozilla.org/en-US/firefox/addon/748">Greasemonkey @ addons.mozilla.org</a>
-
-Once you've done that, navigate to the script and click install.
-You can get the script here: <a href="http://userscripts.org/scripts/show/67574">Jobmine Upgrade @ userscripts.org</a>
-
-Now for the part where I explain the tech I used.
+*Edit from 2017: This is now defunct, so I removed the installation 
+instructions.*
 
 <h1>Greasemonkey</h1>
 Greasemonkey is a tool for customizing the way a web page displays and interacts using javascript. More or less, it overlays javascript you write on top of pages you specify by URLs with wildcards (*). It doesn't overlay it directly, but wraps it in some way as to prevent it from messing things up in the global scope. It also seems to run once the page is done loading, not when the page head is loaded. There are plenty of tutorials out there for doing cool stuff with Greasemonkey, but I started here: <a href="http://diveintogreasemonkey.org/helloworld/index.html">Dive into Greasemonkey</a>. I know it says it's hideously outdated, but the metadata information it provides is still good enough. If you want more up to date information, go here: <a href="http://wiki.greasespot.net/Main_Page">GreaseSpot (Greasemonkey Wiki)</a>.

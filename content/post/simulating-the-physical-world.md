@@ -1039,7 +1039,7 @@ strikes a chord with me. Getting simulations up and running and rendering makes
 for a very special kind of [something out of nothing][0].
 
 SIGGRAPH course notes served as a form of inspiration here, just as they did 
-with the [fluid simulation][1]. Check out ["An Introduction to Physically Based 
+with the [fluid simulation][l1]. Check out ["An Introduction to Physically Based 
 Modelling"][2] course notes from SIGGRAPH 2001 if you want a much more rigorous 
 look into this material. I have the notes from 1997 linked because it looks like 
 Pixar took the 2001 versions down.
@@ -1062,7 +1062,7 @@ renderMathInElement(document.body);
 </script>
 
 [0]: /2013/05/05/something-out-of-nothing/
-[1]: /2016/08/05/webgl-fluid-simulation/
+[l1]: /2016/08/05/webgl-fluid-simulation/
 [2]: https://www.cs.cmu.edu/~baraff/sigcourse/
 [3]: http://rmaggiecai.com/
 [4]: https://www.figma.com

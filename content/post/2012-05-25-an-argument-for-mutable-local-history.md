@@ -279,7 +279,7 @@ another time.
 6. If you're stuck using subversion for whatever reason, *please* use 
    [git-svn][].
 
-[rebase extension]: http://mercurial.selenic.com/wiki/RebaseExtension
+[rebase extension]: https://www.mercurial-scm.org/wiki/RebaseExtension
 [Pro Git]: http://git-scm.com/book
 [Khan Academy]: http://www.khanacademy.org/
 [revsets]: http://www.selenic.com/hg/help/revsets

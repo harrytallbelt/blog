@@ -213,5 +213,5 @@ cool projects you did to get started.
 [Eric]: http://www.evenchick.com/
 [shoot me an email]: mailto:jamie.lf.wong@gmail.com?subject=Starting+to+Build+Things
 [Ruby on Rails]: http://rubyonrails.org/
-[Virtual Ventures]: http://virtualventures.ca/
+[Virtual Ventures]: https://carleton.ca/vv/
 [DHH]: http://david.heinemeierhansson.com/

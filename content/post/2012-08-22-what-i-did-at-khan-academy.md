@@ -489,7 +489,7 @@ vim-mercenary.
 [8]: http://jinja.pocoo.org/docs/
 [9]: http://jqueryui.com/demos/slider/
 [10]: http://worrydream.com/ScrubbingCalculator/
-[11]: http://www.khanacademy.org/about/discovery-lab
+[11]: https://www.khanacademy.org/about/blog/post/27090052871/greetings-from-the-discovery-lab
 [12]: https://developer.mozilla.org/en-US/docs/DOM/HTMLCanvasElement
 [13]: http://www.khanacademy.org/math/vi-hart
 [14]: http://www.khanacademy.org/cs/browse/vi-hart
@@ -498,7 +498,7 @@ vim-mercenary.
 [17]: http://www.theworkinggroup.ca/
 [18]: http://desmondbrand.com/
 [19]: http://ipython.org/
-[20]: http://googleappengine.googlecode.com/svn/trunk/python/google/appengine/ext/remote_api/remote_api_stub.py
+[20]: https://github.com/Khan/frankenserver/blob/master/python/google/appengine/ext/remote_api/remote_api_stub.py
 [21]: http://handlebarsjs.com/
 [22]: http://bjk5.com/
 [23]: /2012/05/25/an-argument-for-mutable-local-history/
@@ -510,4 +510,4 @@ vim-mercenary.
 [29]: https://github.com/jlfwong/vim-arcanist
 [30]: https://github.com/jlfwong/vim-mercenary
 [31]: https://github.com/tpope/vim-fugitive
-[32]: http://www.khanacademy.org/cs/browse/all-programs
+[32]: https://www.khanacademy.org/computing/computer-programming/browse

@@ -16,14 +16,19 @@ type: post
 url: /2011/06/25/complex-asynchronous-queries-in-javascript/
 ---
 
-Over the past couple of weeks, I finally got around to working on personal projects at an event I decided to create with the help of my housemates which we call [SEHackDay][]. The first and only project I worked on over the 3 nights was [Karma][], a Facebook App which gives you statistics about your posts and how they stack up against your friends.
+Over the past couple of weeks, I finally got around to working on personal 
+projects at an event I decided to create with the help of my housemates which we 
+call SEHackDay. The first and only project I worked on over the 3 nights was 
+Karma, a Facebook App which gives you statistics about your posts and how they 
+stack up against your friends.
+
+*EDIT from 2017: I'm a little embarrassed to have ever made this project. Talk 
+about vanity.*
 
 While it has not been remotely as successful as [The Wub Machine][] by one of my housemates, [Peter Sobot][], it did make me think about how to make complex asynchronous queries in JavaScript.
 
 While I was actually dealing with `FB.api` calls to the Facebook API, I'll use the example of jQuery AJAX queries for the purposes of this blog post, since they are more common. Before we delve into the complex examples, let's take a look at the basics.
 
-[Karma]: http://myfriendkarma.heroku.com/
-[SEHackDay]: http://www.sehackday.com/
 [The Wub Machine]: http://the.wubmachine.com/
 [Peter Sobot]: http://www.petersobot.com/
 

@@ -407,7 +407,7 @@ to say about this post. You can read his thoughts in [his response][30].
 [25]: https://babeljs.io/
 [26]: https://facebook.github.io/react/
 [27]: https://golang.org/doc/faq#creating_a_new_language
-[28]: https://www.typescriptlang.org/docs/release-notes/typescript-2.0.html
+[28]: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html
 [29]: https://sites.google.com/site/steveyegge2/is-weak-typing-strong-enough
 [30]: http://mhyee.com/blog/pl_blog_response.html
 [31]: http://mhyee.com/

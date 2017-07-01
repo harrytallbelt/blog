@@ -297,7 +297,7 @@ tomorrow.
 [Pygments]: http://pygments.org/
 [Albino]: https://github.com/github/albino
 [Compass]: http://compass-style.org/
-[Blueprint]: http://compass-style.org/reference/blueprint/
+[Blueprint]: https://github.com/Compass/compass-blueprint
 [Sass]: http://sass-lang.com/
 [Markdown]: http://daringfireball.net/projects/markdown/
 [github.com/jlfwong/blog]: https://github.com/jlfwong/blog

@@ -22,7 +22,7 @@ type: post
 url: /2009/11/12/spoj-problem-2-prime-generator/
 ---
 
-Problem: <a href='https://www.spoj.pl/problems/PRIME1/'>Prime Generator</a>
+Problem: <a href='http://www.spoj.com/problems/PRIME1/'>Prime Generator</a>
 
 <blockquote>
 Peter wants to generate some prime numbers for his cryptosystem. Help him! Your task is to generate all prime numbers between two given numbers!

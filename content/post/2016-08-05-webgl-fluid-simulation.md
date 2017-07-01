@@ -846,14 +846,15 @@ new FluidSim("implementation1", {
 });
 
 </script>
-[0]: http://http.developer.nvidia.com/GPUGems/gpugems_ch38.html
+
+[0]: http://developer.download.nvidia.com/books/HTML/gpugems/gpugems_ch38.html
 [1]: https://www.cs.ubc.ca/~rbridson/fluidsimulation/fluids_notes.pdf
 [2]: https://www.khanacademy.org/math/multivariable-calculus/thinking-about-multivariable-function/visualizing-vector-valued-functions/v/vector-fields-introduction
 [3]: https://en.wikipedia.org/wiki/Bilinear_interpolation
 [4]: https://en.wikipedia.org/wiki/Finite_difference#Forward.2C_backward.2C_and_central_differences
 [5]: http://college.cengage.com/mathematics/larson/elementary_linear/5e/students/ch08-10/chap_10_2.pdf
 [6]: http://math.stackexchange.com/questions/1255790/what-is-the-intuition-behind-matrix-splitting-methods-jacobi-gauss-seidel/1255821#1255821
-[7]: https://github.com/jlfwong/blog/blob/master/javascripts/fluid-sim.js
+[7]: https://github.com/jlfwong/blog/blob/master/static/javascripts/fluid-sim.js
 [8]: https://github.com/evanw/lightgl.js
 [9]: http://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html
 [10]: https://en.wikipedia.org/wiki/Conjugate_gradient_method
