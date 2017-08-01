@@ -37,8 +37,7 @@ distance functions", can create some pretty damn cool things in real time.
 Signed distance functions, or SDFs for short, when passed the coordinates of a 
 point in space, return the shortest distance between that point and some 
 surface. The sign of the return value indicates whether the point is inside that 
-surface or outside (hence *signed* distance function). Let's look at any 
-example.
+surface or outside (hence *signed* distance function). Let's look at an example.
 
 Consider a sphere centered at the origin. Points inside the sphere will have a 
 distance from the origin less than the radius, points on the sphere will have 
