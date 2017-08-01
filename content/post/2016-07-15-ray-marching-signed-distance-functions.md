@@ -411,8 +411,7 @@ float sceneSDF(vec3 samplePoint) {
 ```
 
 *Shadertoy reference note: iGlobalTime is a uniform variable set by Shadertoy 
-that
-the number of seconds since playback started.*
+that contains the number of seconds since playback started.*
 
 <iframe width="640" height="360" frameborder="0" 
 src="https://www.shadertoy.com/embed/XtcGWn?gui=true&t=17&paused=true&muted=false" 
