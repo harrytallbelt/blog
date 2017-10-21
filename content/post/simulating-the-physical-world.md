@@ -6,9 +6,9 @@ title: Simulating the Physical World
 type: post
 ---
 
-<link rel="stylesheet" 
-href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" 
-integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css"
+integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0"
 crossorigin="anonymous">
 
 <style>
@@ -19,42 +19,42 @@ canvas, svg {
 </style>
 
 <figure>
-<canvas id="header-sim" width="600" height="600" style="margin: 0 auto; 
+<canvas id="header-sim" width="600" height="600" style="margin: 0 auto;
 background-image: url(/images/umbrella.png); user-select: none;"></canvas>
 <figcaption>Move your mouse left and right to control the wind.</figcaption>
 </figure>
 
-How might you go about simulating rain? Or any physical process over time, for 
+How might you go about simulating rain? Or any physical process over time, for
 that matter?
 
-In a simulation, whether it be rain, the airflow over a plane wing, or a slinky 
-slinking down some stairs, we can frame the entire simulation with two pieces of 
+In a simulation, whether it be rain, the airflow over a plane wing, or a slinky
+slinking down some stairs, we can frame the entire simulation with two pieces of
 information:
 
 1. What is the state of everything at the beginning of the simulation?
 2. How does that state change from one moment of time to the next?
 
-By "state of everything", I mean any non-constant information needed either to 
-determine what the scene looks like at a given moment, or about how the scene 
-will change from one moment to the next. The position of a raindrop, the 
-direction of the wind, and the velocity of each piece of the slinky are all 
+By "state of everything", I mean any non-constant information needed either to
+determine what the scene looks like at a given moment, or about how the scene
+will change from one moment to the next. The position of a raindrop, the
+direction of the wind, and the velocity of each piece of the slinky are all
 examples of state.
 
-If we represent the entire state of our scene with one big vector \\( \vec y 
-\\), then we can mathematically reformulate the two pieces of information above 
+If we represent the entire state of our scene with one big vector \\( \vec y
+\\), then we can mathematically reformulate the two pieces of information above
 into these two statements:
 
 1. What is a value \\(y_0\\) that satisfies \\( y(t_0) = y_0 \\)?
-2. What is a function \\(f \\) that satisfies \\( \frac{dy(t)}{dt} = f(t, y(t)) 
+2. What is a function \\(f \\) that satisfies \\( \frac{dy(t)}{dt} = f(t, y(t))
    \\)?
 
-If you're confused about why you'd want to store the whole state in one big 
-vector, bear with me. This is one of those cases where it might seem we go way 
-over the top with generality, but I promise there are some interesting tidbits 
+If you're confused about why you'd want to store the whole state in one big
+vector, bear with me. This is one of those cases where it might seem we go way
+over the top with generality, but I promise there are some interesting tidbits
 from looking at a general model for simulation.
 
-If you're confused about *how* you might store the whole state of a scene in one 
-big vector, let's look at a simple example. Let's consider a 2D simulation with 
+If you're confused about *how* you might store the whole state of a scene in one
+big vector, let's look at a simple example. Let's consider a 2D simulation with
 2 particles.
 Each particle has a position \\( \vec x \\) and a velocity \\( \vec v \\).
 
@@ -76,10 +76,10 @@ canvas.addEventListener("touchmove", function(event) {
     // simulation code because I *really* want this post to be done.
     var bounds = canvas.getBoundingClientRect();
     var simulatedEvent = document.createEvent("MouseEvent");
-    simulatedEvent.initMouseEvent("mousemove", true, true, window, 1, 
-                                  first.screenX * 600 / bounds.width, 
+    simulatedEvent.initMouseEvent("mousemove", true, true, window, 1,
+                                  first.screenX * 600 / bounds.width,
                                   first.screenY * 600 / bounds.height,
-                                  first.clientX * 600 / bounds.width, 
+                                  first.clientX * 600 / bounds.width,
                                   first.clientY * 600 / bounds.height,
                                   false, false, false, false, 0/*left*/, null);
 
@@ -105,8 +105,8 @@ canvas.addEventListener("touchmove", function(event) {
 <img src="/images/2particles.svg">
 </figure>
 
-So to make \\( \vec y \\), all we have to do is smoosh \\( \vec x_1 \\),  \\( 
-\vec v_1 \\), \\( \vec x_2 \\), and \\( \vec v_2 \\) into one 8 element vector, 
+So to make \\( \vec y \\), all we have to do is smoosh \\( \vec x_1 \\),  \\(
+\vec v_1 \\), \\( \vec x_2 \\), and \\( \vec v_2 \\) into one 8 element vector,
 like this:
 
 <div>$$
@@ -120,15 +120,15 @@ x_{1x} \\ x_{1y} \\ v_{1x} \\ v_{1y} \\ x_{2x} \\ x_{2y} \\ v_{2x} \\ v_{2y}
 \end{bmatrix}
 $$</div>
 
-And if you're confused why we want to find \\( f(t, y(t)) \\) instead of any old 
-definition of \\( \frac{dy(t)}{dt} \\), the point is to find the derivative only 
-terms of our current state, \\( y(t) \\), constants, and the time itself. If 
-that's impossible, it likely that there's some bit of state we forgot to 
+And if you're confused why we want to find \\( f(t, y(t)) \\) instead of any old
+definition of \\( \frac{dy(t)}{dt} \\), the point is to find the derivative only
+terms of our current state, \\( y(t) \\), constants, and the time itself. If
+that's impossible, it likely that there's some bit of state we forgot to
 consider.
 
 # The Initial State
 
-Defining \\( \vec y_0 \\) defines the initial state of the simulation. So if the 
+Defining \\( \vec y_0 \\) defines the initial state of the simulation. So if the
 initial state of our two-particle simulation looks something like this:
 <figure>
 <img src="/images/particlesetup.svg">
@@ -155,11 +155,11 @@ $$</div>
 
 # The Derivative Function
 
-\\( \vec y_0 \\) tells us the initial state, so now all we need is some way of 
-getting from the initial state to the state a tiny bit into the future, and from 
+\\( \vec y_0 \\) tells us the initial state, so now all we need is some way of
+getting from the initial state to the state a tiny bit into the future, and from
 *that* state a tiny bit further, and so on.
 
-With that in mind, let's solve for \\( f \\) in the equation \\( 
+With that in mind, let's solve for \\( f \\) in the equation \\(
 \frac{dy(t)}{dt} = f(t, y(t)) \\). So let's take the derivative of \\( y(t) \\).
 
 <div>$$
@@ -184,14 +184,14 @@ v_{2y}
 \end{bmatrix}
 $$</div>
 
-Woah! That's a tall formula! Don't worry, we can hopefully make it feel less 
+Woah! That's a tall formula! Don't worry, we can hopefully make it feel less
 intimidating by breaking \\( \vec y \\) back out to its constituent parts.
 
 <div>$$\begin{aligned}
 \frac{d \vec x_1(t)}{dt} = \begin{bmatrix}
     \frac{dx_{1x}}{dt} \\ \\
     \frac{dx_{1y}}{dt}
-\end{bmatrix}, 
+\end{bmatrix},
 
 \frac{d \vec v_1(t)}{dt} = \begin{bmatrix}
     \frac{dv_{1x}}{dt} \\ \\
@@ -201,7 +201,7 @@ intimidating by breaking \\( \vec y \\) back out to its constituent parts.
 \frac{d \vec x_2(t)}{dt} = \begin{bmatrix}
     \frac{dx_{2x}}{dt} \\ \\
     \frac{dx_{2y}}{dt}
-\end{bmatrix}, 
+\end{bmatrix},
 
 \frac{d \vec v_2(t)}{dt} = \begin{bmatrix}
     \frac{dv_{2x}}{dt} \\ \\
@@ -209,67 +209,67 @@ intimidating by breaking \\( \vec y \\) back out to its constituent parts.
 \end{bmatrix}
 \end{aligned}$$</div>
 
-\\( \vec x_1 \\) and \\( \vec x_2 \\) are going to follow similar rules to one 
-another, as will \\( \vec v_1 \\) and \\( \vec v_2 \\). So despite the ball of 
+\\( \vec x_1 \\) and \\( \vec x_2 \\) are going to follow similar rules to one
+another, as will \\( \vec v_1 \\) and \\( \vec v_2 \\). So despite the ball of
 notation above, all we really want to find are the following two things:
 
 <div>$$
 \frac{d \vec x}{dt} \textnormal{  and  } \frac{d \vec v}{dt}
 $$</div>
 
-How we define those two derivatives is the real nuts and bolts of the 
-simulation, and to make this an *interesting* simulation and not just a program 
+How we define those two derivatives is the real nuts and bolts of the
+simulation, and to make this an *interesting* simulation and not just a program
 where random stuff happens, we can to look to physics for inspiration.
 
 # Kinematics & Dynamics
 
-A bit of introductory kinematics and dynamics will go a long way in making our 
+A bit of introductory kinematics and dynamics will go a long way in making our
 simulation interesting. Let's start with the real basics.
 
-\\( \vec x \\) represents position, and the first derivative of position with 
-respect to time is velocity, \\( \vec v \\).  In turn, the first derivative of 
+\\( \vec x \\) represents position, and the first derivative of position with
+respect to time is velocity, \\( \vec v \\).  In turn, the first derivative of
 velocity with respect to time is acceleration, \\( \vec a \\).
 
-It might seem by now that we've already answered our question of finding our 
+It might seem by now that we've already answered our question of finding our
 derivative function \\( f \\), since we know the following:
 
 <div>$$
 \frac{d \vec x}{dt} = \vec v \textnormal{  and  } \frac{d \vec v}{dt} = \vec a
 $$</div>
 
-We have indeed rather nailed down \\( \frac{d \vec x}{dt} \\) since \\( \vec v 
-\\) is part of our state vector \\( \vec y(t) \\), but we'll need to go a teensy 
+We have indeed rather nailed down \\( \frac{d \vec x}{dt} \\) since \\( \vec v
+\\) is part of our state vector \\( \vec y(t) \\), but we'll need to go a teensy
 bit further for the second equation since \\( \vec a \\) is not.
 
-Newton's second law comes in handy here: \\( \vec F = m \vec a \\). If we assume 
-the mass of our particles are known, then we can re-arrange that equation and 
+Newton's second law comes in handy here: \\( \vec F = m \vec a \\). If we assume
+the mass of our particles are known, then we can re-arrange that equation and
 we're left with this:
 
 <div>$$
 \frac{d \vec v}{dt} = \vec a = \frac{\vec F}{m}
 $$</div>
 
-Well hold on, \\( \vec a \\) wasn't part of \\( \vec y(t) \\), neither is \\( 
-\vec F \\), so this hardly seems like progress (remember, we need our derivative 
-function to only be a function of \\( \vec y(t) \\) and \\( t \\)).  But indeed 
-it is progress, because we have all sorts of handy formulas that govern forces 
+Well hold on, \\( \vec a \\) wasn't part of \\( \vec y(t) \\), neither is \\(
+\vec F \\), so this hardly seems like progress (remember, we need our derivative
+function to only be a function of \\( \vec y(t) \\) and \\( t \\)).  But indeed
+it is progress, because we have all sorts of handy formulas that govern forces
 in the natural world.
 
-Let's pretend, for our simple example, that the only force acting upon the 
-particles is the gravitational attraction between them. In that case, we can 
+Let's pretend, for our simple example, that the only force acting upon the
+particles is the gravitational attraction between them. In that case, we can
 determine \\( \vec F \\) using Newton's law of universal gravitation:
 
 <div>$$
 F = G \frac{m_1 m_2}{r^2}
 $$</div>
 
-Where \\( G \\) is the gravitational constant \\( 6.67 \times 10^{-11} 
-\frac{Nm^2}{kg^2} \\), and \\( m_1 \\) and \\( m_2 \\) are the masses of our 
+Where \\( G \\) is the gravitational constant \\( 6.67 \times 10^{-11}
+\frac{Nm^2}{kg^2} \\), and \\( m_1 \\) and \\( m_2 \\) are the masses of our
 particles (which we assume are constant).
 
-In order to do our simulation, we need a direction too, and we also need to 
+In order to do our simulation, we need a direction too, and we also need to
 define \\( r \\) in terms of some part of \\( \vec y(t) \\).
-If we say that \\( \vec F_1 \\) is the force acting upon particle 1, then we can 
+If we say that \\( \vec F_1 \\) is the force acting upon particle 1, then we can
 do that like so:
 
 <div>$$\begin{aligned}
@@ -283,7 +283,7 @@ do that like so:
 = G \frac{m_2 m_1(\vec x_1 - \vec x_2)}{|\vec x_1 - \vec x_2|^3}
 \end{aligned}$$</div>
 
-Let's recap. The changing state of our two particle system is entirely described 
+Let's recap. The changing state of our two particle system is entirely described
 by \\( \vec x_1, \\) \\( \vec v_1, \\) \\( \vec x_2, \\) and \\( \vec v_2 \\).
 And those change over time like so:
 
@@ -296,7 +296,7 @@ G \frac{m_2 (\vec x_2 - \vec x_1)}{|\vec x_2 - \vec x_1|^3} \\ \\
 G \frac{m_1 (\vec x_1 - \vec x_2)}{|\vec x_1 - \vec x_2|^3}
 \end{aligned}$$</div>
 
-Now we have all the information that makes this simulation different from all 
+Now we have all the information that makes this simulation different from all
 other simulations: \\(\vec y_0\\) and \\(f\\).
 
 <div>$$\begin{aligned}
@@ -326,7 +326,7 @@ G \frac{m_1 \big(\vec x_1(t) - \vec x_2(t)\big)}{|\vec x_1(t) - \vec x_2(t)|^2}
 
 \end{aligned}$$</div>
 
-Now then, now that we have a rigorously defined simulation, how might we go 
+Now then, now that we have a rigorously defined simulation, how might we go
 about turning it into a mesmerizing animation?
 
 In case you've written simulations or games before, you might jump to
@@ -341,53 +341,53 @@ Let's take a step back and consider *why* that works.
 
 # A Differential Equation
 
-Before diving into implementation, let's step back a second and see what 
-information we have and what information we need. We have a \\( y_0 \\) that 
-satisfies \\( y(t_0) = y_0 \\), and we have an \\( f \\) that satisfies \\( 
-\frac{dy}{dt}(t) = f(t, y(t)) \\). What we *want* is a function that can predict 
-the state of the system at any point in time. Phrased mathematically, we want 
+Before diving into implementation, let's step back a second and see what
+information we have and what information we need. We have a \\( y_0 \\) that
+satisfies \\( y(t_0) = y_0 \\), and we have an \\( f \\) that satisfies \\(
+\frac{dy}{dt}(t) = f(t, y(t)) \\). What we *want* is a function that can predict
+the state of the system at any point in time. Phrased mathematically, we want
 \\( y(t) \\).
 
-With this in mind, if you squint carefully at \\( \frac{dy}{dt}(t) = f(t, y(t)) 
-\\), you might spy that it's an equation that relates \\( y \\) with its 
-derivative \\( \frac{dy}{dt} \\). That makes it a differential equation! More 
-specifically, it makes it a [first order, ordinary differential equation][9]. If 
+With this in mind, if you squint carefully at \\( \frac{dy}{dt}(t) = f(t, y(t))
+\\), you might spy that it's an equation that relates \\( y \\) with its
+derivative \\( \frac{dy}{dt} \\). That makes it a differential equation! More
+specifically, it makes it a [first order, ordinary differential equation][9]. If
 we *solve* this differential equation, we get the function \\( y(t) \\).
 
-Solving for \\( y(t) \\) given \\( y_0 \\) and \\( f \\) is called an [initial 
+Solving for \\( y(t) \\) given \\( y_0 \\) and \\( f \\) is called an [initial
 value problem][5].
 
 # Numerical Integration
 
-Some initial value problems have easily found analytic solutions, but for 
-complex simulations this tends to be infeasible. So let's try to figure out a 
+Some initial value problems have easily found analytic solutions, but for
+complex simulations this tends to be infeasible. So let's try to figure out a
 method of approximating the solution.
 
 Let's explore a simpler initial value problem:
 
-Given \\( y(0) = 1 \\) and \\( \frac{dy}{dt}(t) = f(t, y(t)) = y(t) \\), find an 
+Given \\( y(0) = 1 \\) and \\( \frac{dy}{dt}(t) = f(t, y(t)) = y(t) \\), find an
 approximation of \\( y(t) \\).
 
-Let's examine the problem from a graphical perspective by considering the value 
-and tangent line at \\(t = 0 \\). From our givens, we have \\( y(0) = 1 \\) and 
+Let's examine the problem from a graphical perspective by considering the value
+and tangent line at \\(t = 0 \\). From our givens, we have \\( y(0) = 1 \\) and
 \\( \frac{dy}{dt}(t) = y(t) = 1 \\).
 
 <svg width="400" viewBox="0 0 1 1"
-    style="background-image: url(/images/emptygraph.png);" 
+    style="background-image: url(/images/emptygraph.png);"
     preserveAspectRatio="xMinYMin meet">
-    <path d="M0 0.833 L1 0.333" fill="none" stroke="#EB5757" 
+    <path d="M0 0.833 L1 0.333" fill="none" stroke="#EB5757"
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
 </svg>
 
-So we don't know what \\( y(t) \\) looks like yet, but we do know that it should 
-follow the tangent line near to \\( t = 0 \\). So let's estimate \\( y(0 + h) 
-\\) for some small value of \\( h \\) by following the tangent line. We'll use 
+So we don't know what \\( y(t) \\) looks like yet, but we do know that it should
+follow the tangent line near to \\( t = 0 \\). So let's estimate \\( y(0 + h)
+\\) for some small value of \\( h \\) by following the tangent line. We'll use
 \\( h = 0.5 \\) for now.
 
-<svg width="400" viewBox="0 0 1 1" style="background-image: 
+<svg width="400" viewBox="0 0 1 1" style="background-image:
 url(/images/emptygraph.png);" preserveAspectRatio="xMinYMin meet">
-    <path d="M0 0.833 L1 0.333" fill="none" stroke="#EB5757" 
+    <path d="M0 0.833 L1 0.333" fill="none" stroke="#EB5757"
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
     <circle cx="0.5" cy="0.583" r="0.01" fill="#EB5757" />
@@ -403,8 +403,8 @@ y(h) \approx y(0) + h \frac{dy}{dt}(0) &= y(0) + h f(0, y(0)) \\
 
 So for \\( h = 0.5 \\), \\( y(h) \approx 1.5 \\).
 
-Now we can repeat this process. Even though we don't know the exact value of \\( 
-y(h) \\), as long as we have a pretty good approximation of it, we can figure 
+Now we can repeat this process. Even though we don't know the exact value of \\(
+y(h) \\), as long as we have a pretty good approximation of it, we can figure
 out a pretty good approximation of the tangent line at that point too!
 
 <div>$$\begin{aligned}
@@ -412,9 +412,9 @@ f(t, y(t)) &= y(t) \\
 f(0.5, 1.5) &= 1.5
 \end{aligned}$$</div>
 
-<svg width="400" viewBox="0 0 1 1" style="background-image: 
+<svg width="400" viewBox="0 0 1 1" style="background-image:
 url(/images/emptygraph.png);" preserveAspectRatio="xMinYMin meet">
-    <path d="M0 0.95833 L1 0.20833" fill="none" stroke="#EB5757" 
+    <path d="M0 0.95833 L1 0.20833" fill="none" stroke="#EB5757"
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
     <circle cx="0.5" cy="0.583" r="0.01" fill="#EB5757" />
@@ -422,22 +422,22 @@ url(/images/emptygraph.png);" preserveAspectRatio="xMinYMin meet">
 
 Then we can follow this tangent line \\( h \\) units to the right as well.
 
-<svg width="400" viewBox="0 0 1 1" style="background-image: 
-url(/images/emptygraph.png); background-size: contain;" 
+<svg width="400" viewBox="0 0 1 1" style="background-image:
+url(/images/emptygraph.png); background-size: contain;"
 preserveAspectRatio="xMinYMin meet">
-    <path d="M0 0.95833 L1 0.20833" fill="none" stroke="#EB5757" 
+    <path d="M0 0.95833 L1 0.20833" fill="none" stroke="#EB5757"
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
     <circle cx="0.5" cy="0.583" r="0.01" fill="#EB5757" />
     <circle cx="0.666" cy="0.45833" r="0.01" fill="#EB5757" />
 </svg>
 
-We can repeat the process again, with a tangent slope of \\( f(t, y(t)) = f(1, 
+We can repeat the process again, with a tangent slope of \\( f(t, y(t)) = f(1,
 2.25) = 2.25\\):
 
-<svg width="400" viewBox="0 0 1 1" style="background-image: 
+<svg width="400" viewBox="0 0 1 1" style="background-image:
 url(/images/emptygraph.png);" preserveAspectRatio="xMinYMin meet">
-    <path d="M0 1.2083 L1 0.0833" fill="none" stroke="#EB5757" 
+    <path d="M0 1.2083 L1 0.0833" fill="none" stroke="#EB5757"
     stroke-width="0.005" stroke-dasharray="0.01 0.01"/>
     <circle cx="0.333" cy="0.666" r="0.01" fill="#EB5757" />
     <circle cx="0.5" cy="0.583" r="0.01" fill="#EB5757" />
@@ -452,7 +452,7 @@ t_{i+1} &= t_i + h \\
 y_{i+1} &= y_i + h f(t_i, y_i)
 \end{aligned}$$</div>
 
-This is called the "Forward Euler" method of numerical integration. This is the 
+This is called the "Forward Euler" method of numerical integration. This is the
 general case of the step `x += v * delta_t`!
 
 In this particular initial value problem, our steps look like so:
@@ -462,7 +462,7 @@ t_{i+1} &= t_i + h \\
 y_{i+1} &= y_i + h y_i
 \end{aligned}$$</div>
 
-This method lends itself well to representing the computations in a table, like 
+This method lends itself well to representing the computations in a table, like
 so:
 
 <div>$$\begin{aligned}
@@ -482,38 +482,38 @@ y_2 &= y_1 + h y_1
 &=& 1.5 + 0.5 (1.5)
 &=& 2.25 \\
 
-y_3 &= 1.5, &
+t_3 &= 1.5, &
 y_3 &= y_2 + h y_2
 &=& 2.25 + 0.5 (2.25)
 &=& 3.375 \\
 \end{aligned}$$</div>
 
-It turns out that this particular initial value problem has a nice analytical 
+It turns out that this particular initial value problem has a nice analytical
 solution: \\( y(t) = e^t \\)
 
 <figure>
-<svg width="400" viewBox="0 0 1 1" style="background-image: 
+<svg width="400" viewBox="0 0 1 1" style="background-image:
 url(/images/expgraph.png);"
 preserveAspectRatio="xMinYMin meet">
 </svg>
 <figcaption>Graph of \( y(t) = e^t \)</figcaption>
 </figure>
 
-When approximating the solution with Forward Euler, what do you think happens as 
+When approximating the solution with Forward Euler, what do you think happens as
 the time step \\( h \\) gets smaller?
 
 <figure>
-<svg width="400" viewBox="0 0 1 1" style="background-image: 
-url(/images/expgraph.png);" id="graph1" preserveAspectRatio="xMinYMin 
+<svg width="400" viewBox="0 0 1 1" style="background-image:
+url(/images/expgraph.png);" id="graph1" preserveAspectRatio="xMinYMin
 meet"></svg>
 <div>
     <span id="hval">\( h=0.5 \)</span>
 </div>
 <div>
-    <input id="hrange" type="range" min="0.1" max="0.5" step="0.01" value="0.5" 
+    <input id="hrange" type="range" min="0.1" max="0.5" step="0.01" value="0.5"
 />
 </div>
-<figcaption>Move the slider left and right to control the value of 
+<figcaption>Move the slider left and right to control the value of
 h.</figcaption>
 </figure>
 
@@ -575,22 +575,22 @@ render(euler(0, 2, 1, function(t, y) { return y; }, 0.5));
 
 })();</script>
 
-The error between the approximate solution and the exact solution decreases as 
-\\( h \\) decreases! In addition to decreasing \\( h \\) to decrease the error, 
-you could also use an alternative method of numerical integration that may 
-provide better error bounds, such as the [Midpoint method][7], [Runge-Kutta 
+The error between the approximate solution and the exact solution decreases as
+\\( h \\) decreases! In addition to decreasing \\( h \\) to decrease the error,
+you could also use an alternative method of numerical integration that may
+provide better error bounds, such as the [Midpoint method][7], [Runge-Kutta
 methods][8], and [linear multistep methods][11].
 
 # Let's get coding!
 
-Just as we can generalize the definition of a simulation mathematically, we can 
+Just as we can generalize the definition of a simulation mathematically, we can
 generalize the *implementation* of a simulation programmatically.
 
-Since I'm most familiar with JavaScript but appreciate the clarity type 
-annotations can give code, all the code samples will be written in 
+Since I'm most familiar with JavaScript but appreciate the clarity type
+annotations can give code, all the code samples will be written in
 [TypeScript][12].
 
-Let's start with a version that assumes that `y` is a one-dimensional array of 
+Let's start with a version that assumes that `y` is a one-dimensional array of
 numbers, just as in the mathematical explorations.
 
 ```typescript
@@ -627,9 +627,9 @@ function runSimulation(
 }
 ```
 
-It turns out to be pretty inconvenient to always operate on 1-dimensional arrays 
-of numbers, so we can abstract away the addition and multiplication operations 
-on the simulation state into an interface, then define our general simulation 
+It turns out to be pretty inconvenient to always operate on 1-dimensional arrays
+of numbers, so we can abstract away the addition and multiplication operations
+on the simulation state into an interface, then define our general simulation
 code concisely using [TypeScript Generics][13][^1].
 
 ```typescript
@@ -659,8 +659,8 @@ function runSimulation<T extends Numeric<T>>(
 }
 ```
 
-The cool thing about having this general code is it lets us focus on the core of 
-the simulation: what about *this* simulation is different from other 
+The cool thing about having this general code is it lets us focus on the core of
+the simulation: what about *this* simulation is different from other
 simulations. Using the example of our two particle simulation from before:
 
 ```typescript
@@ -748,7 +748,7 @@ Earth & Moon are shown at 10x their correct proportional size.
 </figcaption>
 </figure>
 
-If you want to play with the code, here it is: [Earth Moon Simulation on 
+If you want to play with the code, here it is: [Earth Moon Simulation on
 Codepen][14].
 
 <script>
@@ -824,11 +824,11 @@ function f(t, y) {
     var x1 = y.x1, v1 = y.v1, x2 = y.x2, v2 = y.v2;
     return new TwoParticles(
     // dx1/dt = v1
-    v1, 
+    v1,
     // dv1/dt = G*m2*(x2-x1)/|x2-x1|^3
-    x2.minus(x1).times(G * m2 / Math.pow(x2.minus(x1).length(), 3)), 
+    x2.minus(x1).times(G * m2 / Math.pow(x2.minus(x1).length(), 3)),
     // dx2/dt = v2
-    v2, 
+    v2,
     // dv2/dt = G*m1*(x1-x1)/|x1-x2|^3
     x1.minus(x2).times(G * m1 / Math.pow(x1.minus(x2).length(), 3)));
 }
@@ -843,7 +843,7 @@ runSimulation(y0, f, render);
 
 # Collisions & Constraints
 
-While that mathematical model of things I presented does model the physical 
+While that mathematical model of things I presented does model the physical
 world, the numerical integration method sadly falls apart in certain situations.
 
 Consider a simulation of a bouncing ball.
@@ -853,7 +853,7 @@ Consider a simulation of a bouncing ball.
 </figure>
 
 <script>(function() {
-var canvas = document.getElementById("bounce1"); var ctx = 
+var canvas = document.getElementById("bounce1"); var ctx =
 canvas.getContext("2d");
 
 var y = 0.8; // m
@@ -900,7 +900,7 @@ v
 \end{bmatrix}
 $$</div>
 
-Where \\( x \\) is the ball's height off the ground and \\( v \\) is the 
+Where \\( x \\) is the ball's height off the ground and \\( v \\) is the
 velocity of the ball. If we drop the ball from a height of 0.8 meters, we have:
 
 <div>$$
@@ -915,7 +915,7 @@ If we plot \\( x(t) \\), it would look something like this:
 
 <img width="400" height="400" src="/images/bouncegraph.png" />
 
-While the ball is falling, we can construct our derivative function \\( f \\) 
+While the ball is falling, we can construct our derivative function \\( f \\)
 fairly easily:
 
 <div>$$
@@ -928,26 +928,26 @@ f(t, y(t)) = \frac{dy}{dt}(t) = \begin{bmatrix}
 \end{bmatrix}
 $$</div>
 
-While accelerating only under the influence of gravity, \\( a = -g = -9.8 
+While accelerating only under the influence of gravity, \\( a = -g = -9.8
 \frac{m}{s^2} \\).
 
-But what happens when the ball hits the ground? We know the ball has hit the 
-ground when \\( x = 0 \\). But in our numerical integration, it's possible that 
-the ball might be above the ground at one time step, and *in* the ground the 
+But what happens when the ball hits the ground? We know the ball has hit the
+ground when \\( x = 0 \\). But in our numerical integration, it's possible that
+the ball might be above the ground at one time step, and *in* the ground the
 next time step: \\( x\_i > 0, x\_{i+1} < 0 \\).
 
-We could solve this by rewinding time to find the time \\( t_c \\) at which the 
-collision happens \\( (t_i < t_c < t\_{i+1}) \\). But once we've found that, we 
-still don't have a way to define \\( \frac{dv}{dt} \\) that would result in the 
+We could solve this by rewinding time to find the time \\( t_c \\) at which the
+collision happens \\( (t_i < t_c < t\_{i+1}) \\). But once we've found that, we
+still don't have a way to define \\( \frac{dv}{dt} \\) that would result in the
 velocity instantaneously changing to be upwards instead of downwards.
 
-It's possible to work this all out by having the collision take a finite amount 
-of time to take place and applying some force \\( F \\) over that timespan \\( 
-\Delta t \\), but it's usually easier to just support some kind of discrete 
-constaints to the simulation.
+It's possible to work this all out by having the collision take a finite amount
+of time to take place and applying some force \\( F \\) over that timespan \\(
+\Delta t \\), but it's usually easier to just support some kind of discrete
+constraints to the simulation.
 
-We can also do more than one iteration of the physics simulation per rendered 
-frame to reduce the amount by which the ball penetrates the floor before 
+We can also do more than one iteration of the physics simulation per rendered
+frame to reduce the amount by which the ball penetrates the floor before
 bouncing.  With that in mind, our core simulation code changes to this:
 
 ```typescript
@@ -1017,45 +1017,45 @@ function render(y: Ball) {
 runSimulation(y0, f, applyConstraints, 30, render)
 ```
 
-You can play around with this version of the code here: [Bouncing Ball on 
+You can play around with this version of the code here: [Bouncing Ball on
 Codepen][15].
 
 # Implementers beware!
 
-While this general description of simulations has some nice properties, it 
-doesn't necessarily yield the most high performance simulations. I find it a 
-nice framework to think about the behavior of simulations, though there's 
+While this general description of simulations has some nice properties, it
+doesn't necessarily yield the most high performance simulations. I find it a
+nice framework to think about the behavior of simulations, though there's
 certainly a lot of unnecessary overhead.
 
-The rain simulation that starts this post is, for instance, not implemented 
-using the patterns here. Instead, it was an experiment using the [Entity 
-Component System][16] architectural pattern. You can see the source for the rain 
+The rain simulation that starts this post is, for instance, not implemented
+using the patterns here. Instead, it was an experiment using the [Entity
+Component System][16] architectural pattern. You can see the source for the rain
 simulation here: [Rain Simulation source on GitHub][17].
 
 # Until next time!
 
-Something about the intersection of math, physics, and programming really 
-strikes a chord with me. Getting simulations up and running and rendering makes 
+Something about the intersection of math, physics, and programming really
+strikes a chord with me. Getting simulations up and running and rendering makes
 for a very special kind of [something out of nothing][0].
 
-SIGGRAPH course notes served as a form of inspiration here, just as they did 
-with the [fluid simulation][l1]. Check out ["An Introduction to Physically Based 
-Modelling"][2] course notes from SIGGRAPH 2001 if you want a much more rigorous 
-look into this material. I have the notes from 1997 linked because it looks like 
+SIGGRAPH course notes served as a form of inspiration here, just as they did
+with the [fluid simulation][l1]. Check out ["An Introduction to Physically Based
+Modelling"][2] course notes from SIGGRAPH 2001 if you want a much more rigorous
+look into this material. I have the notes from 1997 linked because it looks like
 Pixar took the 2001 versions down.
 
-Thanks to [Maggie Cai][3] for the beautiful illustration of the couple with the 
-umbrella and for having the patience to meticulously choose colors when I can 
+Thanks to [Maggie Cai][3] for the beautiful illustration of the couple with the
+umbrella and for having the patience to meticulously choose colors when I can
 barely tell the difference between blue and grey.
 
 And in case you were wondering, the illustration was made in [Figma][4]. 😃
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" 
-integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js"
+integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1"
 crossorigin="anonymous"></script>
-<script 
-src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" 
-integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" 
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js"
+integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx"
 crossorigin="anonymous"></script>
 <script>
 renderMathInElement(document.body);
