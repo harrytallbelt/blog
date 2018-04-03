@@ -1,5 +1,5 @@
 ---
-date: 2018-04-02
+date: 2018-04-03
 published: true
 status: publish
 title: "Color: From Hexcodes to Eyeballs"
