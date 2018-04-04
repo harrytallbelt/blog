@@ -184,7 +184,7 @@ If you were to measure the spectral power distribution coming off of the screen,
 </figure>
 
 
-Two different spectral power distributions that appear to the same to human observers are called [**metamers**](https://en.wikipedia.org/wiki/Metamerism_(color)).
+Two different spectral power distributions that look the same to human observers are called [**metamers**](https://en.wikipedia.org/wiki/Metamerism_(color)).
 
 <figure>
 <img src="/images/color/Metamers1.png">
@@ -384,7 +384,7 @@ This means we can have the same chromaticity at many different intensities.
 </figure>
 
 
-We can evan make a chromaticity graph where the intensity varies with r & g in order to maximize intensity while preserving the ratio between $$R$$, $$G$$, and $$B$$.
+We can even make a chromaticity graph where the intensity varies with r & g in order to maximize intensity while preserving the ratio between $$R$$, $$G$$, and $$B$$.
 
 <figure>
 <img src="/images/color/rgChromaticity3.png">
@@ -451,7 +451,7 @@ With an understanding of gamuts & chromaticity, we can finally start to discuss 
 
 # Screen subpixels
 
-Regardless of the manufacturer of your display, if you took a powerful magnifying glass to your display, you find a grid of pixels, where each pixel is composed of 3 types of subpixels: one type emitting red, one green, and one blue. It might look something like this:
+Regardless of the manufacturer of your display, if you took a powerful magnifying glass to your display, you would find a grid of pixels, where each pixel is composed of 3 types of subpixels: one type emitting red, one green, and one blue. It might look something like this:
 
 <figure>
 <img src="/images/color/Subpixels.png">
@@ -471,7 +471,7 @@ Using [ColorSync Utility](https://support.apple.com/guide/colorsync-utility/welc
 <img src="/images/color/gamut3.png">
 </figure>
 
-Notice that the corners of the gamut no longer lie along the spectral locus. This makes sense, since the subpixels do not emit pure monochromatic light. This gamut represents the full range of chromaticities that this monitor can faithfully represent.
+Notice that the corners of the gamut no longer lie along the spectral locus. This makes sense, since the subpixels do not emit pure monochromatic light. This gamut represents the full range of chromaticities that this monitor can faithfully reproduce.
 
 While gamuts of monitors will vary, modern monitors should try to enclose a specific other gamut: sRGB.
 
@@ -498,13 +498,13 @@ If we plot these, we wind up with a gamut similar to, but slightly smaller than,
 <img src="/images/color/gamut2.png">
 </figure>
 
-There are parts of the official sRGB gamut that aren’t within the MacBook Pro LCD gamut, meaning that the LCD can’t faithfully reproduce them. To accommodate for that, my MacBook seems to used a modified sRGB gamut.
+There are parts of the official sRGB gamut that aren’t within the MacBook Pro LCD gamut, meaning that the LCD can’t faithfully reproduce them. To accommodate for that, my MacBook seems to use a modified sRGB gamut.
 
 <figure>
 <img src="/images/color/gamut4.png">
 </figure>
 
-sRGB is the default color space used almost everywhere, and is the standard color space used by browsers ([specified in the CSS standard](https://www.w3.org/TR/css-color-4/#color-type)). All of the diagrams in this blog post are in sRGB color space. That means that all colors outside of the sRGB gamut isn’t accurately reproduced in the diagrams in this post!
+sRGB is the default color space used almost everywhere, and is the standard color space used by browsers ([specified in the CSS standard](https://www.w3.org/TR/css-color-4/#color-type)). All of the diagrams in this blog post are in sRGB color space. That means that all colors outside of the sRGB gamut aren't accurately reproduced in the diagrams in this post!
 
 Which brings us, finally, to how colors are specified on the web.
 
@@ -519,13 +519,13 @@ Which brings us, finally, to how colors are specified on the web.
 
 So the coordinate associated with `#9BE1E0` is $$(0.61, 0.32, 0.88)$$.
 
-You might think that these three coordinates specify the power we send to each of the RGB subpixels, but there’s *one* more step: gamma correction.
+Before we send these values to the display hardware to set subpixel intensities, there’s *one* more step: gamma correction.
 
 # Gamma correction
 
 With each coordinate in RGB space being given 256 possible values, we want to ensure that each adjacent pair is as different as possible. For example, we want `#030000` to be as different from `#040000` as `#F40000` is from `#F50000`.
 
-Since human vision is much more sensitive to differences between darker tones than light tones, this means we want to allocate more of the 256 values to darker tones.
+Human vision is much more sensitive to small changes in low energy lights than small changes to high energy lights, so we want to allocate more of the 256 values to representing low energy values.
 
 To see how, let’s imagine we wanted to encode greyscale values, and only had 3 bits to do it, giving us 8 possible values.
 
@@ -566,7 +566,7 @@ If we plot sRGB values against linear values, it would look like this:
 <img src="/images/color/gamma3.png">
 </figure>
 
-Okay! That was the last piece we needed to understand to see how we get from hex codes to eye balls! Let’s do the walkthrough 😀
+Okay! That was the last piece we needed to understand to see how we get from hex codes to eyeballs! Let’s do the walkthrough 😀
 
 # From Hexcodes to Eyeballs
 
@@ -582,7 +582,7 @@ This gives us a coordinate of $$(0.61, 0.32, 0.88)$$ in sRGB space. Next, we tak
 <img src="/images/color/summary2.png">
 </figure>
 
-This gives us a coordinate $$(0.33, 0.08, 0.10)$$ in linear RGB space. These values are used to proportionally power the subpixels on the screen.
+This gives us a coordinate $$(0.33, 0.08, 0.10)$$ in linear RGB space. These values are used to set the intensity of the subpixels on the screen.
 
 <figure>
 <img src="/images/color/summary3.png">
@@ -623,7 +623,7 @@ The filter is imperfect, so as brightness is increased, black pixels will emit l
 
 # Stuff I left out
 
-This post intentionally glosses over some facets of color reproduction and recognition. For instance, we didn’t talk about what your brain does with the cone excitation information in the [opponent-process theory](https://psych.ucalgary.ca/PACE/VA-Lab/colourperceptionweb/theories.htm) or the effects of [color constancy](https://en.wikipedia.org/wiki/Color_constancy). We didn’t talk about [additive color](https://en.wikipedia.org/wiki/Additive_color) vs. [subtractive color](https://en.wikipedia.org/wiki/Subtractive_color). We didn’t talk about [color blindness](http://www.colour-blindness.com/general/how-it-works-science/). We didn’t talk about the difference between [luminous flux, luminous intensity, luminance, illuminance, and luminous emittance](https://en.wikipedia.org/wiki/Photometry_(optics)#Photometric_quantities). We didn’t talk about [ICC device color profiles](https://en.wikipedia.org/wiki/ICC_profile) or what programs like [f.lux](https://justgetflux.com/) do to color perception.
+This post intentionally glosses over many facets of color reproduction and recognition. For instance, we didn’t talk about what your brain does with the cone excitation information in the [opponent-process theory](https://psych.ucalgary.ca/PACE/VA-Lab/colourperceptionweb/theories.htm) or the effects of [color constancy](https://en.wikipedia.org/wiki/Color_constancy). We didn’t talk about [additive color](https://en.wikipedia.org/wiki/Additive_color) vs. [subtractive color](https://en.wikipedia.org/wiki/Subtractive_color). We didn’t talk about [color blindness](http://www.colour-blindness.com/general/how-it-works-science/). We didn’t talk about the difference between [luminous flux, luminous intensity, luminance, illuminance, and luminous emittance](https://en.wikipedia.org/wiki/Photometry_(optics)#Photometric_quantities). We didn’t talk about [ICC device color profiles](https://en.wikipedia.org/wiki/ICC_profile) or what programs like [f.lux](https://justgetflux.com/) do to color perception.
 
 I left them out because this post is already way too long! As a friend of mine said: even if you're a person who understands that most things are deeper than they look, color is way deeper than you would reasonably expect.
 
