@@ -233,7 +233,7 @@ The normalized cone area under the stimulation curves will always be equal for a
 </figcaption>
 </figure>
 
-Our 3 sets of cones reduce any spectral flux curve $$\Phi_e(\lambda)$$ down to a triplet of three numbers $$(S, M, L)$$, and every distinct $$(S, M, L)$$ triplet will be a distinct color! This is pretty convenient, because (0.02, 0.12, 0.16) is much easier to communicate than a complicated continuous function. For the mathematically inclined, our eyes are doing a dimensional reduction from an infinite dimensional space into 3 dimensions, which is pretty damn cool thing to be able to do subconsciously.
+Our 3 sets of cones reduce any spectral flux curve $$\Phi_e(\lambda)$$ down to a triplet of three numbers $$(S, M, L)$$, and every distinct $$(S, M, L)$$ triplet will be a distinct color! This is pretty convenient, because (0.02, 0.12, 0.16) is much easier to communicate than a complicated continuous function. For the mathematically inclined, our eyes are doing a dimensional reduction from an infinite dimensional space into 3 dimensions, which is a pretty damn cool thing to be able to do subconsciously.
 
 This $$(S, M, L)$$ triplet is, in fact, our first example of a **color space**.
 
@@ -256,7 +256,7 @@ Any wavelength which stimulates the M cone will also stimulate either the L or S
 
 A problematic side effect of this fact is that it’s really difficult to increase stimulation of only one of the cones. This, in particular, would make it not a great candidate for building display hardware.
 
-Another historical, pragmatic problem was that the cone sensitivities weren’t accurately known until the 1990s, and a need to develop a mathematically precise model of color significantly predates that. The first significant progress on that front came about in the late 1920’s.
+Another historical, pragmatic problem was that the cone sensitivities weren’t accurately known until the 1990's, and a need to develop a mathematically precise model of color significantly predates that. The first significant progress on that front came about in the late 1920’s.
 
 # Wright & Guild’s color matching experiments
 
@@ -317,7 +317,7 @@ Just as we were able to use our L, M, and S cone sensitivity functions to determ
 <img src="/images/color/ColorMatchingLemon.png">
 </figure>
 
-By taking the area under the curve of product of the spectral curve and the color matching functions, we’re left with an $$(R, G, B)$$ triplet (1.0, 0.8, 0.2) uniquely identifying this color.
+By taking the area under the curve of the product of the spectral curve and the color matching functions, we’re left with an $$(R, G, B)$$ triplet (1.0, 0.8, 0.2) uniquely identifying this color.
 
 While the $$(L, M, S)$$ color space gave us a precise way to *identify* colors, this $$(R, G, B)$$ color space gives us a precise way to *reproduce* colors. But, as we saw in the color matching functions, any colors with a negative $$(R, G, B)$$ coordinate can’t actually be reproduced.
 
@@ -625,7 +625,8 @@ The filter is imperfect, so as brightness is increased, black pixels will emit l
 
 This post intentionally glosses over many facets of color reproduction and recognition. For instance, we didn’t talk about what your brain does with the cone excitation information in the [opponent-process theory](https://psych.ucalgary.ca/PACE/VA-Lab/colourperceptionweb/theories.htm) or the effects of [color constancy](https://en.wikipedia.org/wiki/Color_constancy). We didn’t talk about [additive color](https://en.wikipedia.org/wiki/Additive_color) vs. [subtractive color](https://en.wikipedia.org/wiki/Subtractive_color). We didn’t talk about [color blindness](http://www.colour-blindness.com/general/how-it-works-science/). We didn’t talk about the difference between [luminous flux, luminous intensity, luminance, illuminance, and luminous emittance](https://en.wikipedia.org/wiki/Photometry_(optics)#Photometric_quantities). We didn’t talk about [ICC device color profiles](https://en.wikipedia.org/wiki/ICC_profile) or what programs like [f.lux](https://justgetflux.com/) do to color perception.
 
-I left them out because this post is already way too long! As a friend of mine said: even if you're a person who understands that most things are deeper than they look, color is way deeper than you would reasonably expect.
+I left them out because this post is already way too long! As a [friend of mine](https://twitter.com/amtinits) said: even if you're a person who understands that most things are deeper than they look, color is way deeper than you would reasonably expect.
+
 
 # References
 
